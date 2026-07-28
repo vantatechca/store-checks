@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id        Int      @id @default(autoincrement())
+  domain    String   @unique
+  createdAt DateTime @default(now())
+}
+
+model CheckRun {
+  id         Int       @id @default(autoincrement())
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  status     String    @default("running") // running | done | failed
+  total      Int       @default(0)
+  checked    Int       @default(0)
+  upCount    Int       @default(0)
+  errorCount Int       @default(0)
+  trigger    String    @default("manual") // manual | schedule
+  results    CheckResult[]
+}
+
+model CheckResult {
+  id            Int      @id @default(autoincrement())
+  runId         Int
+  run           CheckRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  domain        String
+  status        String   // UP | DNS_ERROR | STORE_UNAVAILABLE | RAW_SHOPIFY_DOMAIN | SITE_ERROR | PASSWORD_PROTECTED | TIMEOUT | UNKNOWN
+  detail        String?
+  screenshotUrl String?
+  aiUsed        Boolean  @default(false)
+  durationMs    Int      @default(0)
+  checkedAt     DateTime @default(now())
+
+  @@index([runId])
+  @@index([domain])
+}
+
+model Issue {
+  id            Int       @id @default(autoincrement())
+  domain        String
+  status        String
+  detail        String?
+  screenshotUrl String?
+  firstSeenAt   DateTime  @default(now())
+  lastSeenAt    DateTime  @default(now())
+  resolvedAt    DateTime?
+
+  @@index([domain])
+  @@index([resolvedAt])
+}

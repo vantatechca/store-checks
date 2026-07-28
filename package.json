@@ -1,0 +1,33 @@
+{
+  "name": "store-checks",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "prisma migrate deploy && next start",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "check:once": "tsx scripts/run-check.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "cloudinary": "^2.5.1",
+    "next": "^15.2.3",
+    "node-cron": "^3.0.3",
+    "p-limit": "^6.2.0",
+    "playwright": "^1.51.0",
+    "prisma": "^6.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/node-cron": "^3.0.11",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
