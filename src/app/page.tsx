@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { STATUS_LABELS, Status } from "@/lib/status";
 import { Controls } from "./controls";
+import { IssueNote } from "./issue-note";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +60,7 @@ export default async function Dashboard() {
         <div>
           <h1>🛍️ Store Checks</h1>
           <p className="sub">
-            Automatic checks at 8 AM &amp; 8 PM ({TZ}) · reports sent to Discord
+            Automatic daily check ({TZ}) · reports sent to Discord
           </p>
         </div>
         <p className="sub">Last check: {fmt(lastRun?.finishedAt)}</p>
@@ -126,6 +127,7 @@ export default async function Dashboard() {
                     <th>Issue</th>
                     <th>Detail</th>
                     <th>Screenshot</th>
+                    <th>Notes</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -147,6 +149,9 @@ export default async function Dashboard() {
                         ) : (
                           <span className="note">—</span>
                         )}
+                      </td>
+                      <td>
+                        <IssueNote id={issue.id} initialNote={issue.note} />
                       </td>
                     </tr>
                   ))}
