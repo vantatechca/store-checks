@@ -4,6 +4,7 @@ export interface ReportIssue {
   domain: string;
   status: Status;
   detail: string | null;
+  note: string | null;
   screenshotUrl: string | null;
   firstSeenAt: Date;
   isNew: boolean;
@@ -45,12 +46,15 @@ async function postToWebhook(payload: { content?: string; embeds?: Embed[] }): P
 }
 
 function issueEmbeds(issues: ReportIssue[], color: number): Embed[] {
-  return issues.map((i) => ({
-    title: `${i.domain} — ${STATUS_LABELS[i.status] ?? i.status}`,
-    description: i.detail ?? undefined,
-    color,
-    image: i.screenshotUrl ? { url: i.screenshotUrl } : undefined,
-  }));
+  return issues.map((i) => {
+    const lines = [i.detail, i.note ? `📝 **Note:** ${i.note}` : null].filter(Boolean) as string[];
+    return {
+      title: `${i.domain} — ${STATUS_LABELS[i.status] ?? i.status}`,
+      description: lines.length > 0 ? lines.join("\n").slice(0, 4000) : undefined,
+      color,
+      image: i.screenshotUrl ? { url: i.screenshotUrl } : undefined,
+    };
+  });
 }
 
 function formatDate(d: Date): string {

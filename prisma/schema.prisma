@@ -47,6 +47,7 @@ model Issue {
   domain        String
   status        String
   detail        String?
+  note          String?
   screenshotUrl String?
   firstSeenAt   DateTime  @default(now())
   lastSeenAt    DateTime  @default(now())
