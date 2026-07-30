@@ -1,5 +1,5 @@
 # Playwright base image ships Chromium + all system dependencies
-FROM mcr.microsoft.com/playwright:v1.51.0-noble AS base
+FROM mcr.microsoft.com/playwright:v1.62.0-noble AS base
 WORKDIR /app
 ENV NODE_ENV=production
 
